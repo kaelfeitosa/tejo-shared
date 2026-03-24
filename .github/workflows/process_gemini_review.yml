@@ -1,0 +1,29 @@
+name: Process Gemini Review
+
+on:
+  workflow_call:
+    secrets:
+      USER_PAT:
+        required: true
+
+jobs:
+  log-gemini-comments:
+    name: Process Gemini Review
+    if: github.event.review.user.login == 'gemini-code-assist[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Repost Review as User
+        env:
+          USER_PAT: ${{ secrets.USER_PAT }}
+          REPO: ${{ github.repository }}
+          PULL_NUMBER: ${{ github.event.pull_request.number }}
+          REVIEW_ID: ${{ github.event.review.id }}
+        run: |
+          echo "Reposting review comments using user credentials..."
+          python3 tools/repost_gemini_review.py \
+            --repo "$REPO" \
+            --pull-number "$PULL_NUMBER" \
+            --review-id "$REVIEW_ID"

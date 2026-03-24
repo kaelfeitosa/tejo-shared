@@ -1,0 +1,33 @@
+name: Trigger Gemini Review
+
+on:
+  workflow_call:
+    secrets:
+      USER_PAT:
+        required: true
+
+jobs:
+  request-review:
+    name: Request Gemini Review
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Commit Author
+        id: check_author
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          PULL_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          # Fetch the latest commit from the PR
+          AUTHOR_LOGIN=$(gh api "/repos/$REPO/pulls/$PULL_NUMBER/commits" --jq '.[-1].author.login')
+          echo "Latest commit author login: $AUTHOR_LOGIN"
+          echo "author_login=$AUTHOR_LOGIN" >> "$GITHUB_OUTPUT"
+
+      - name: Request Review
+        if: steps.check_author.outputs.author_login == 'google-labs-jules[bot]' || steps.check_author.outputs.author_login == 'google-labs-jules'
+        env:
+          GH_TOKEN: ${{ secrets.USER_PAT }}
+          REPO: ${{ github.repository }}
+          PULL_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          gh pr comment "$PULL_NUMBER" --repo "$REPO" --body "/gemini review"

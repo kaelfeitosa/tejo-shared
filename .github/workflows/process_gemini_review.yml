@@ -12,8 +12,12 @@ jobs:
     if: github.event.review.user.login == 'gemini-code-assist[bot]'
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
+      - name: Checkout Shared Tools
         uses: actions/checkout@v4
+        with:
+          repository: kaelfeitosa/tejo-shared
+          path: .tejo-shared
+          ref: main
 
       - name: Repost Review as User
         env:
@@ -23,7 +27,7 @@ jobs:
           REVIEW_ID: ${{ github.event.review.id }}
         run: |
           echo "Reposting review comments using user credentials..."
-          python3 tools/repost_gemini_review.py \
+          python3 .tejo-shared/tools/repost_gemini_review.py \
             --repo "$REPO" \
             --pull-number "$PULL_NUMBER" \
             --review-id "$REVIEW_ID"

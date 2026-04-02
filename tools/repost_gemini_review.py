@@ -14,7 +14,15 @@ TIMEOUT_SECONDS = 30
 _DISMISS_MESSAGE = "Review reposted by automated tool."
 JULES_USERNAMES = frozenset(["google-labs-jules", "google-labs-jules[bot]"])
 _GRAPHQL_MUTATION_BATCH_SIZE = 50
-_VALIDATION_STRING = "- run full validation after changes."
+_VALIDATION_STRING = """CRITICAL:
+- Follow AGENTS.md strictly
+- Apply pragmatic SOLID and Clean Code principles
+- When encountering conflicting review feedback:
+  - Select the most coherent and maintainable solution
+  - Proceed decisively without back-and-forth
+  - Include the final chosen approach in your response
+- Run full validation after changes
+"""
 
 _GET_THREADS_QUERY = """
 query($owner: String!, $name: String!, $pullNumber: Int!, $after: String) {

@@ -19,7 +19,7 @@ _VALIDATION_STRING = """CRITICAL:
 - Apply pragmatic SOLID and Clean Code principles
 - When encountering conflicting review feedback:
   - Select the most coherent and maintainable solution
-  - Proceed decisively without back-and-forth
+  - Proceed decisively without any back-and-forth
   - Document the final chosen approach as comment in code
 - Run full validation after changes
 """

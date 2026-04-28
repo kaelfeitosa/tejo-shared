@@ -20,7 +20,7 @@ _VALIDATION_STRING = """CRITICAL:
 - When encountering conflicting review feedback:
   - Select the most coherent and maintainable solution
   - Proceed decisively without back-and-forth
-  - Include the final chosen approach in your response
+  - Document the final chosen approach as comment in code
 - Run full validation after changes
 """
 
